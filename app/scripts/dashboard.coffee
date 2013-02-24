@@ -1,0 +1,132 @@
+'use strict';
+
+# Model class
+class Dashboard
+
+    constructor: (@name) ->
+        @items= []
+
+    addItem: (item) ->
+        @items.push(item)
+
+
+class DashboardItem
+
+
+    constructor: (@name, @type) ->
+
+
+
+class DashboardItemJenkinsJob extends DashboardItem
+
+    constructor: (name, @url) ->
+       super name,'jenkins'
+
+    load: (jenkins) ->
+
+        jenkins.getJob @url, (info) =>
+            @info = info
+
+            jenkins.getBuild @info.lastBuild.url, (build) =>
+                @build = build
+
+
+# Object to serialize dashboards
+DashboardSerializer =
+
+    serialize: (dashboard) ->
+        jsonObj =
+            name: dashboard.name
+            items: []
+
+        for item in dashboard.items
+            jsonObj.items.push(@serializeItem(item))
+
+        JSON.stringify jsonObj
+
+    serializeItem: (item) ->
+        jsonObj =
+            name : item.name
+            type : item.type
+
+        switch item.type
+            when 'jenkins' then jsonObj = @serializeJenkinsItem(item, jsonObj)
+
+        jsonObj
+
+    serializeJenkinsItem: (item, jsonObj) ->
+        jsonObj.url = item.url
+
+        jsonObj
+
+
+
+    deserialize:(json) ->
+        if not json?
+            return null
+
+        jsonObj = JSON.parse json
+        obj = new Dashboard(jsonObj.name)
+
+        for item in jsonObj.items
+            obj.addItem @deserializeItem item
+
+        obj
+
+    deserializeItem: (item) ->
+        obj = null
+        switch item.type
+            when 'jenkins' then obj = @deserializeJenkinsItem(item)
+
+        obj
+
+    deserializeJenkinsItem: (item) ->
+        obj = new DashboardItemJenkinsJob(item.name, item.url)
+
+
+angular.module('DashboardModule', [])
+.factory 'DashboardManager', (localStorageService) ->
+
+    instance =
+
+        dashboards: null
+
+        currentDashboard: null
+
+        test : () ->
+            c = new DashboardItemJenkinsJob('job2' ,'http://test.fr')
+            console.log(c)
+            a = new Dashboard('toto')
+            a.addItem(c)
+            console.log(a)
+            a = DashboardSerializer.serialize(a)
+            console.log(a)
+            a = DashboardSerializer.deserialize(a)
+            console.log(a)
+        # return all Dashboards
+        getDashboards: () ->
+            @dashboards = JSON.parse(localStorageService.get('dashboards'));
+            @dashboards ?= []
+
+        # create a new dashboard
+        createDashboard : (name) ->
+            this.dashboards.push({name : name})
+            localStorageService.add('dashboards', JSON.stringify(@dashboards))
+
+        getDashboard :(name) ->
+            @currentDashboard = DashboardSerializer.deserialize(localStorageService.get(name));
+
+            if not @currentDashboard?
+                @currentDashboard = new Dashboard(name)
+
+            @currentDashboard
+
+        addJenkinsJob : (name, url) ->
+            @currentDashboard.addItem(new DashboardItemJenkinsJob(name, url))
+
+
+        saveCurrentDashboard : () ->
+           # @currentDashboard.addItem( new DashboardItemJenkinsJob('job2' ,'http://test.fr'))
+            localStorageService.add(@currentDashboard.name, DashboardSerializer.serialize(@currentDashboard))
+
+# this.model.Dashboard = Dashboard

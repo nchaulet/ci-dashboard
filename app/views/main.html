@@ -1,0 +1,12 @@
+<div>
+	<h1>Welcome to jenkins monitor</h1>
+	Selected  : {{ selected }}
+	<br/><br/>
+	<select ui-select2 ng-model="selected" >
+		<option value="{{dash.name}}" ng-repeat="dash in dashboards" >{{dash.name}}</option>
+	</select>
+    <a href="#/dashboard/{{selected}}" class="btn btn-info" >OK</a>
+	<br/><br/>
+    <input type="text"  ng-model="newName" /> <button ng-click="newDash()" class="btn btn-success" type="submit">New</button>
+
+</div>
