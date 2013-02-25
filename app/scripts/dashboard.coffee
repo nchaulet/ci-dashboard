@@ -3,11 +3,14 @@
 # Model class
 class Dashboard
 
-    constructor: (@name) ->
+    constructor: (@name, refreshInterval) ->
         @items= []
+        refreshInterval ?= 20000
+        @refreshInterval = refreshInterval
 
     addItem: (item) ->
         @items.push(item)
+
 
 
 class DashboardItem
@@ -30,13 +33,13 @@ class DashboardItemJenkinsJob extends DashboardItem
             jenkins.getBuild @info.lastBuild.url, (build) =>
                 @build = build
 
-
 # Object to serialize dashboards
 DashboardSerializer =
 
     serialize: (dashboard) ->
         jsonObj =
             name: dashboard.name
+            refreshInterval: dashboard.refreshInterval
             items: []
 
         for item in dashboard.items
@@ -66,7 +69,7 @@ DashboardSerializer =
             return null
 
         jsonObj = JSON.parse json
-        obj = new Dashboard(jsonObj.name)
+        obj = new Dashboard(jsonObj.name, jsonObj.refreshInterval)
 
         for item in jsonObj.items
             obj.addItem @deserializeItem item
@@ -85,7 +88,8 @@ DashboardSerializer =
 
 
 angular.module('DashboardModule', [])
-.factory 'DashboardManager', (localStorageService) ->
+.factory 'DashboardManager', (localStorageService, Jenkins) ->
+
 
     instance =
 
@@ -93,16 +97,6 @@ angular.module('DashboardModule', [])
 
         currentDashboard: null
 
-        test : () ->
-            c = new DashboardItemJenkinsJob('job2' ,'http://test.fr')
-            console.log(c)
-            a = new Dashboard('toto')
-            a.addItem(c)
-            console.log(a)
-            a = DashboardSerializer.serialize(a)
-            console.log(a)
-            a = DashboardSerializer.deserialize(a)
-            console.log(a)
         # return all Dashboards
         getDashboards: () ->
             @dashboards = JSON.parse(localStorageService.get('dashboards'));
@@ -120,6 +114,12 @@ angular.module('DashboardModule', [])
                 @currentDashboard = new Dashboard(name)
 
             @currentDashboard
+
+        loadDashboard:() ->
+            console.log 'load dashboard'
+            for item in @currentDashboard.items
+                if item instanceof DashboardItemJenkinsJob
+                    item.load(Jenkins)
 
         addJenkinsJob : (name, url) ->
             @currentDashboard.addItem(new DashboardItemJenkinsJob(name, url))
