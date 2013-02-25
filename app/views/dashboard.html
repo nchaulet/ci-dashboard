@@ -3,6 +3,9 @@
 <div ng-when="true" ng-controller="DashParamsCtl">
 <div class="well">
 
+	<label >Refresh interval(ms): </label>
+	<input type="number" ng-model="dashboard.refreshInterval" />
+	<br/><br/>
 	<select ui-select2 ng-model="selectedJob">
 		<option  value="{{job}}" ng-repeat="job in jenkinsJobs" >{{job.name}}</option>
 	</select>
@@ -14,9 +17,11 @@
 </div>
 </div>
 <div class="container-fluid" ui-sortable ng-model="dashboard.items">
-<div class="span3 jobs alert" ng-class="{'alert-error': item.info.color =='red', 'alert-success': item.info.color =='blue'}"  ng-class="{}" ng-repeat="item in dashboard.items" >
+<div class="span3 jobs alert" ng-class="{'alert-error': item.color =='red', 'alert-success': item.color =='blue'}"  ng-class="{}" ng-repeat="item in dashboard.items" >
         <h4>{{item.name}}</h4>
         <br/>
-        <i class="icon-time"></i> {{item.build.timestamp|date:'dd/MM/yyyy HH:mm'}}
+        <i class="icon-time"></i> {{item.lastBuildDate|date:'dd/MM/yyyy HH:mm'}}
+        <br/><br/><br/><br/><br/><br/>
+        <a href="{{item.url}}"><i class="icon-external-link"></i> more details</a>
 </div>
 </div>

@@ -25,12 +25,15 @@ angular.module('dashboardApp')
 
 # Dashboard parameters controller
 angular.module('dashboardApp')
- .controller 'DashParamsCtl',  ($scope, Jenkins, DashboardManager) ->
+ .controller 'DashParamsCtl',  ($scope, $routeParams, Jenkins, DashboardManager) ->
+
+ 	$scope.dashboard = DashboardManager.currentDashboard
 
  	Jenkins.getJobs (jobs) ->
  		$scope.jenkinsJobs = jobs;
 
  	$scope.addJenkinsJob =  (job) ->
+ 		console.log job
  		job = JSON.parse(job)
  		DashboardManager.addJenkinsJob(job.name, job.url)
 

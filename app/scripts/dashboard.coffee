@@ -15,7 +15,6 @@ class Dashboard
 
 class DashboardItem
 
-
     constructor: (@name, @type) ->
 
 
@@ -29,9 +28,12 @@ class DashboardItemJenkinsJob extends DashboardItem
 
         jenkins.getJob @url, (info) =>
             @info = info
+            @color = info.color
+            @url = info.url
 
             jenkins.getBuild @info.lastBuild.url, (build) =>
                 @build = build
+                @lastBuildDate = build.timestamp
 
 # Object to serialize dashboards
 DashboardSerializer =

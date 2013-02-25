@@ -8,7 +8,8 @@
     "angular-resource": "~1.0.5",
     "select2": "*",
     "angular-ui": "*",
-    "angular-local-storage": "*"
-  },
+    "angular-local-storage": "*",
+    "bootstrap.css" : "*"  
+},
   "devDependencies": {}
 }
