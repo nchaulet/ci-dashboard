@@ -22,6 +22,10 @@ angular.module('dashboardApp')
  	$scope.$on '$destroy', (event) =>
  		clearInterval($scope.timer)
 
+ 	$scope.selectItemAction = (item) ->
+ 		$scope.selectedItem = item
+
+
 
 # Dashboard parameters controller
 angular.module('dashboardApp')
@@ -29,16 +33,32 @@ angular.module('dashboardApp')
 
  	$scope.dashboard = DashboardManager.currentDashboard
 
- 	Jenkins.getJobs (jobs) ->
- 		$scope.jenkinsJobs = jobs;
 
- 	$scope.addJenkinsJob =  (job) ->
+
+ 	$scope.searchJenkinsJobsAction = () ->
+ 		Jenkins.getJobs $scope.jenkinsServer, (jobs) ->
+ 			$scope.jenkinsJobs = jobs;
+
+ 	$scope.addJenkinsJobAction =  (job) ->
  		console.log job
  		job = JSON.parse(job)
  		DashboardManager.addJenkinsJob(job.name, job.url)
 
- 	$scope.saveDashboard = () ->
+ 	$scope.saveDashboardAction = () ->
  		DashboardManager.saveCurrentDashboard()
+
+
+
+
+angular.module('dashboardApp')
+ .controller 'ItemEditCtl',  ($scope, Jenkins, DashboardManager) ->
+
+ 	$scope.deleteItemAction = (item) ->
+ 		# find more sexy
+ 		if confirm('delete item ?')
+ 			DashboardManager.removeItem(item)
+ 			$scope.$parent.selectedItem = null
+
 
 
 

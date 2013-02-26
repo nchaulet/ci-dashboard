@@ -18,7 +18,7 @@ module.exports = function (grunt) {
     yeoman: yeomanConfig,
     watch: {
       coffee: {
-        files: ['<%= yeoman.app %>/scripts/*.coffee','<%= yeoman.app %>/scripts/controllers*.coffee'],
+        files: ['<%= yeoman.app %>/scripts/*.coffee','<%= yeoman.app %>/scripts/controllers/*.coffee','<%= yeoman.app %>/scripts/services/*.coffee'],
         tasks: ['coffee:dist']
       },
       coffeeTest: {
@@ -92,7 +92,7 @@ module.exports = function (grunt) {
     coffee: {
       dist: {
         files: {
-          '.tmp/scripts/coffee.js': '<%= yeoman.app %>/scripts/*.coffee'
+          '.tmp/scripts/coffee.js': ['<%= yeoman.app %>/scripts/*.coffee', '<%= yeoman.app %>/scripts/controllers/*.coffee', '<%= yeoman.app %>/scripts/services/*.coffee']
         }
       },
       test: {

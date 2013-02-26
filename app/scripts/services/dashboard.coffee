@@ -11,6 +11,9 @@ class Dashboard
     addItem: (item) ->
         @items.push(item)
 
+    removeItem: (item) ->
+        @items.splice(@items.indexOf(item), 1)
+
 
 
 class DashboardItem
@@ -30,7 +33,6 @@ class DashboardItemJenkinsJob extends DashboardItem
             @info = info
             @color = info.color
             @url = info.url
-            console.log info
 
             jenkins.getBuild @info.lastBuild.url, (build) =>
                 @build = build
@@ -119,7 +121,6 @@ angular.module('DashboardModule', [])
             @currentDashboard
 
         loadDashboard:() ->
-            console.log 'load dashboard'
             for item in @currentDashboard.items
                 if item instanceof DashboardItemJenkinsJob
                     item.load(Jenkins)
@@ -127,6 +128,8 @@ angular.module('DashboardModule', [])
         addJenkinsJob : (name, url) ->
             @currentDashboard.addItem(new DashboardItemJenkinsJob(name, url))
 
+        removeItem: (item) ->
+            @currentDashboard.removeItem(item)
 
         saveCurrentDashboard : () ->
            # @currentDashboard.addItem( new DashboardItemJenkinsJob('job2' ,'http://test.fr'))

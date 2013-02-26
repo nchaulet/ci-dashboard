@@ -6,9 +6,9 @@ angular
 
 	instance =
 
-        getJobs: (callback) ->
+        getJobs: (url, callback) ->
             $http
-            .jsonp('http://jenkins.m6web.fr/api/json/?jsonp=JSON_CALLBACK')
+            .jsonp(url+'/api/json/?jsonp=JSON_CALLBACK')
             .success (data) ->
             	callback(data.jobs)
 
