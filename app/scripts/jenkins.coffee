@@ -8,7 +8,7 @@ angular
 
         getJobs: (callback) ->
             $http
-            .jsonp('https://builds.apache.org/api/json/?jsonp=JSON_CALLBACK')
+            .jsonp('http://jenkins.m6web.fr/api/json/?jsonp=JSON_CALLBACK')
             .success (data) ->
             	callback(data.jobs)
 

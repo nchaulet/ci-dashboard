@@ -1,7 +1,11 @@
+<div class="pull-right">
+<br/>
+<button ng-hide="edition" class="btn " ng-click="edition = true"> <i class="icon-cog"></i> Edit </button>
+<button ng-show="edition" class="btn " ng-click="edition = false">close </button>
+</div>
 <h1><a href="#/"><i class="icon-circle-arrow-left"></i></a> DASHBOARD {{dashboard.name}}</h1>
-<div ng-switch on="settingsVisible" >
-<div ng-when="true" ng-controller="DashParamsCtl">
-<div class="well">
+
+<div ng-controller="DashParamsCtl" ng-show="edition" class="well">
 
 	<label >Refresh interval(ms): </label>
 	<input type="number" ng-model="dashboard.refreshInterval" />
@@ -14,14 +18,16 @@
 
     <button class="btn btn-success" ng-click="saveDashboard()">Save</button>
 </div>
-</div>
-</div>
+
+
 <div class="container-fluid" ui-sortable ng-model="dashboard.items">
-<div class="span3 jobs alert" ng-class="{'alert-error': item.color =='red', 'alert-success': item.color =='blue'}"  ng-class="{}" ng-repeat="item in dashboard.items" >
-        <h4>{{item.name}}</h4>
-        <br/>
-        <i class="icon-time"></i> {{item.lastBuildDate|date:'dd/MM/yyyy HH:mm'}}
-        <br/><br/><br/><br/><br/><br/>
+<div class="span4 jobs alert" ng-class="{'alert-error': item.color =='red', 'alert-success': item.color =='blue'}"  ng-class="{}" ng-repeat="item in dashboard.items" >
+
+        <div class="pull-right"><i class="icon-time"></i> {{item.lastBuildDate|date:'dd/MM/yyyy HH:mm'}}</div>
+        <h4 >{{item.name}} </h4>
+        <p>
+            <img src="{{item.url}}/test/trend" />
+        </p>
         <a href="{{item.url}}"><i class="icon-external-link"></i> more details</a>
 </div>
 </div>

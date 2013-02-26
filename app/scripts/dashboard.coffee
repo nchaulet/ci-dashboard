@@ -30,6 +30,7 @@ class DashboardItemJenkinsJob extends DashboardItem
             @info = info
             @color = info.color
             @url = info.url
+            console.log info
 
             jenkins.getBuild @info.lastBuild.url, (build) =>
                 @build = build

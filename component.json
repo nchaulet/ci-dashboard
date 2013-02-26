@@ -9,7 +9,8 @@
     "select2": "*",
     "angular-ui": "*",
     "angular-local-storage": "*",
-    "bootstrap.css" : "*"  
+    "bootstrap.css" : "*",  
+    "font-awesome"  : "*"
 },
   "devDependencies": {}
 }
