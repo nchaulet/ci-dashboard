@@ -43,7 +43,7 @@
 
 
 <div class="container-fluid" ui-sortable ng-model="dashboard.items">
-<div class="span4 jobs alert" ng-class="{'alert-error': item.color =='red', 'alert-success': item.color =='blue'}"  ng-class="{}" ng-repeat="item in dashboard.items" >
+<div class="span3 jobs alert" ng-class="{'alert-error': item.color =='red', 'alert-success': item.color =='blue'}"  ng-class="{}" ng-repeat="item in dashboard.items" >
   		<div ng-show="edition" class="pull-right"><button class="btn" ng-click="selectItemAction(item)"><i  class="icon-cog"></i> Edit</button></div>
         <h4 >{{item.name}} </h4>
         <i class="icon-time"></i> {{item.lastBuildDate|date:'dd/MM/yyyy HH:mm'}}
