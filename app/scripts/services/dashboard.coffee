@@ -31,12 +31,26 @@ class DashboardItemJenkinsJob extends DashboardItem
 
         jenkins.getJob @url, (info) =>
             @info = info
-            @color = info.color
+            @status = if info.color == 'blue' then 'success' else if info.color == 'red' then 'fail' else 'disabled'
             @url = info.url
 
             jenkins.getBuild @info.lastBuild.url, (build) =>
                 @build = build
                 @lastBuildDate = build.timestamp
+
+
+class DashboardItemTravisCiJob extends DashboardItem
+
+    constructor: (name) ->
+       super name, 'travis'
+       @url = 'https://travis-ci.org/'+name
+
+    load: (travis) ->
+
+        travis.getRepo (@name) , (data) =>
+            @lastBuildDate = data.last_build_finished_at
+            @status = if data.last_build_status == 0 then 'success' else 'fail'
+
 
 # Object to serialize dashboards
 DashboardSerializer =
@@ -68,7 +82,6 @@ DashboardSerializer =
         jsonObj
 
 
-
     deserialize:(json) ->
         if not json?
             return null
@@ -85,15 +98,19 @@ DashboardSerializer =
         obj = null
         switch item.type
             when 'jenkins' then obj = @deserializeJenkinsItem(item)
+            when 'travis'  then obj = @deserializeTravisItem(item)
 
         obj
+
+    deserializeTravisItem: (item) ->
+        obj = new DashboardItemTravisCiJob(item.name)
 
     deserializeJenkinsItem: (item) ->
         obj = new DashboardItemJenkinsJob(item.name, item.url)
 
 
 angular.module('DashboardModule', [])
-.factory 'DashboardManager', (localStorageService, Jenkins) ->
+.factory 'DashboardManager', (localStorageService, Jenkins, TravisCi) ->
 
 
     instance =
@@ -118,15 +135,22 @@ angular.module('DashboardModule', [])
             if not @currentDashboard?
                 @currentDashboard = new Dashboard(name)
 
+            @currentDashboard.addItem(new DashboardItemTravisCiJob('willdurand/Geocoder'))
+
             @currentDashboard
 
         loadDashboard:() ->
             for item in @currentDashboard.items
                 if item instanceof DashboardItemJenkinsJob
                     item.load(Jenkins)
+                if item instanceof DashboardItemTravisCiJob
+                    item.load(TravisCi)
 
         addJenkinsJob : (name, url) ->
             @currentDashboard.addItem(new DashboardItemJenkinsJob(name, url))
+
+        addTravisJob : (name) ->
+            @currentDashboard.addItem(new DashboardItemTravisCiJob(name))
 
         removeItem: (item) ->
             @currentDashboard.removeItem(item)

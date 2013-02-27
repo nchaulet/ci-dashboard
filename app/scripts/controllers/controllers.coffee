@@ -8,6 +8,7 @@ angular.module('dashboardApp')
         DashboardManager.createDashboard($scope.newName)
         $scope.newName = null
 
+
 # dashboard controller
 angular.module('dashboardApp')
  .controller 'DashCtrl',  ($scope, $routeParams, DashboardManager, Jenkins) ->
@@ -34,7 +35,6 @@ angular.module('dashboardApp')
  	$scope.dashboard = DashboardManager.currentDashboard
 
 
-
  	$scope.searchJenkinsJobsAction = () ->
  		Jenkins.getJobs $scope.jenkinsServer, (jobs) ->
  			$scope.jenkinsJobs = jobs;
@@ -43,6 +43,9 @@ angular.module('dashboardApp')
  		console.log job
  		job = JSON.parse(job)
  		DashboardManager.addJenkinsJob(job.name, job.url)
+
+ 	$scope.addTravisJobAction = (name) ->
+ 		DashboardManager.addTravisJob(name)
 
  	$scope.saveDashboardAction = () ->
  		DashboardManager.saveCurrentDashboard()
