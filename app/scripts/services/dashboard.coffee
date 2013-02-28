@@ -135,8 +135,6 @@ angular.module('DashboardModule', [])
             if not @currentDashboard?
                 @currentDashboard = new Dashboard(name)
 
-            @currentDashboard.addItem(new DashboardItemTravisCiJob('willdurand/Geocoder'))
-
             @currentDashboard
 
         loadDashboard:() ->
