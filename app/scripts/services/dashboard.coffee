@@ -31,10 +31,11 @@ class DashboardItemJenkinsJob extends DashboardItem
 
         jenkins.getJob @url, (info) =>
             @info = info
-            @status = if info.color == 'blue' then 'success' else if info.color == 'red' then 'fail' else 'disabled'
+            @status = if info.color.indexOf('blue') == 0 then 'success' else if info.color.indexOf('red') == 0 then 'fail' else 'disabled'
             @url = info.url
 
             jenkins.getBuild @info.lastBuild.url, (build) =>
+                @running = (build.building == true)
                 @build = build
                 @lastBuildDate = build.timestamp
 
@@ -49,8 +50,8 @@ class DashboardItemTravisCiJob extends DashboardItem
 
         travis.getRepo (@name) , (data) =>
             @lastBuildDate = data.last_build_finished_at
-            @status = if data.last_build_status == 0 then 'success' else 'fail'
-
+            @status = if data.last_build_status == 0 then 'success' else if data.last_build_status == 1 then 'fail' else 'disabled'
+            @running = (@lastBuildDate == null)
 
 # Object to serialize dashboards
 DashboardSerializer =

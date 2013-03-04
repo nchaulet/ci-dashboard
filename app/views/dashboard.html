@@ -56,9 +56,9 @@
 
 
 	<div class="container-fluid" ui-sortable ng-model="dashboard.items">
-	<div class="span3 jobs alert" ng-class="{'alert-error': item.status == 'fail', 'alert-success': item.status =='success'}"  ng-class="{}" ng-repeat="item in dashboard.items" >
+	<div class="span3 jobs alert" ng-class="{'alert-error': item.status == 'fail', 'alert-success': item.status =='success','alert-info' : item.status == 'running'}"  ng-class="{}" ng-repeat="item in dashboard.items" >
 	  		<div ng-show="edition" class="pull-right"><button class="btn" ng-click="selectItemAction(item)"><i  class="icon-cog"></i> Edit</button></div>
-	        <h4 >{{item.name}}</h4>
+	        <h4 >{{item.name}} <i ng-show="item.running == true" class=" icon-refresh icon-spin"></i></h4>
 	        <p><i class="icon-time"></i> {{item.lastBuildDate|date:'dd/MM/yyyy HH:mm'}}</p>
 	        <!-- <p>
 	            <img src="{{item.url}}/test/trend" />
