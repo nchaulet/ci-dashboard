@@ -2,13 +2,16 @@
 <div class="navbar navbar-inverse">
 	<div class="navbar-inner">
 		<ul class="nav pull-right">
+			<li ng-show="edition">
+				<a href="" ng-click="saveDashboardAction()"><i class="icon-save"></i> Save</a>
+			</li>
 			<li ng-show="edition" class="dropdown">
-				  <a class="dropdown-toggle" data-toggle="dropdown" href=""> Actions</a>
+				  <a class="dropdown-toggle" data-toggle="dropdown" href=""><i class="icon-cog"></i> Settings <span class="caret"></span></a>
 				  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
 				   		<li><a href="" bs-modal="'views/modal/addJenkins.html'">Add jenkins job</a></li>
 						<li><a href="" bs-modal="'views/modal/addTravis.html'">Add Travis CI job</a></li>
 						<li class="divider"></li>
-						<li><a href="">Global parameter</a></li>
+						<li><a href="" bs-modal="'views/modal/dashSettings.html'">Global parameter</a></li>
 				  </ul>
 			</li>
 			<li>
@@ -23,32 +26,11 @@
 </div>
 
 <div class="container-fluid">
-	<div ng-controller="DashParamsCtl" ng-show="edition" class="well">
 
-		<button class="btn btn-success" ng-click="saveDashboardAction()"><i class="icon-save"></i> Save</button>
-
-		<form>
-			<fieldset>
-				<legend>Dashboard settings</legend>
-				<label >Refresh interval(ms): </label>
-				<input type="number" ng-model="dashboard.refreshInterval" />
-			</fieldset>
-			<div class="row-fluid">
-
-			</div>
-		</form>
-	</div>
-
-	<div ng-show="edition &amp;&amp; selectedItem != null" ng-controller="ItemEditCtl" class="well">
-		<button ng-show="edition" class="btn pull-right" ng-click="$parent.selectedItem = null"><i class="icon-remove"></i> Close </button>
-		<h2>{{selectedItem.name}}</h2>
-		<br/>
-		<button class="btn btn-danger" ng-click="deleteItemAction(selectedItem)"><i class="icon-remove-sign"></i>Delete</button>
-	</div>
 
 	<div class="container-fluid" ui-sortable ng-model="dashboard.items">
 	<div class="span3 jobs alert" ng-class="{'alert-error': item.status == 'fail', 'alert-success': item.status =='success','alert-info' : item.status == 'running'}"  ng-class="{}" ng-repeat="item in dashboard.items" >
-	  		<div ng-show="edition" class="pull-right"><button class="btn" ng-click="selectItemAction(item)"><i  class="icon-cog"></i> Edit</button></div>
+	  		<div ng-show="edition" class="pull-right"><button class="btn" ng-click="selectItemAction(item)" bs-modal="'views/modal/itemEdit.html'"><i  class="icon-cog"></i> Edit</button></div>
 	        <h4 >{{item.name}} <i ng-show="item.running == true" class=" icon-refresh icon-spin"></i></h4>
 	        <p><i class="icon-time"></i> {{item.lastBuildDate|date:'dd/MM/yyyy HH:mm'}}</p>
 	        <!-- <p>

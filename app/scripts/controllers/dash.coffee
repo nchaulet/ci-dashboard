@@ -1,42 +1,30 @@
-# dashboard home page
-angular.module('dashboardApp')
- .controller 'MainCtrl',  ($scope, DashboardManager) ->
-
-    $scope.dashboards = DashboardManager.getDashboards()
-
-    $scope.newDash =  () ->
-        DashboardManager.createDashboard($scope.newName)
-        $scope.newName = null
-
-
 # dashboard controller
 angular.module('dashboardApp')
  .controller 'DashCtrl',  ($scope, $routeParams, DashboardManager, Jenkins) ->
 
- 	$scope.dashboard = DashboardManager.getDashboard($routeParams.name)
- 	DashboardManager.loadDashboard()
+    $scope.dashboard = DashboardManager.getDashboard($routeParams.name)
+    DashboardManager.loadDashboard()
 
- 	$scope.timer = setInterval () =>
- 		DashboardManager.loadDashboard()
- 	, $scope.dashboard.refreshInterval
+    $scope.timer = setInterval () =>
+        DashboardManager.loadDashboard()
+    , $scope.dashboard.refreshInterval
 
- 	$scope.$on '$destroy', (event) =>
- 		clearInterval($scope.timer)
+    $scope.$on '$destroy', (event) =>
+        clearInterval($scope.timer)
 
- 	$scope.selectItemAction = (item) ->
- 		$scope.selectedItem = item
+    $scope.selectItemAction = (item) ->
+        $scope.selectedItem = item
 
+    $scope.saveDashboardAction = () ->
+        DashboardManager.saveCurrentDashboard()
 
 
 # Dashboard parameters controller
 angular.module('dashboardApp')
- .controller 'DashParamsCtl',  ($scope, $routeParams, Jenkins, DashboardManager) ->
+ .controller 'DashSettingsCtl',  ($scope, $routeParams, Jenkins, DashboardManager) ->
 
- 	$scope.dashboard = DashboardManager.currentDashboard
+    $scope.dashboard = DashboardManager.currentDashboard
 
-
- 	$scope.saveDashboardAction = () ->
- 		DashboardManager.saveCurrentDashboard()
 
 # Dashboard jenkins controller
 angular.module('dashboardApp')
@@ -62,16 +50,17 @@ angular.module('dashboardApp')
 
     $scope.addTravisJobAction = (name) ->
         DashboardManager.addTravisJob(name)
+        $scope.dismiss()
 
 
 angular.module('dashboardApp')
  .controller 'ItemEditCtl',  ($scope, Jenkins, DashboardManager) ->
 
- 	$scope.deleteItemAction = (item) ->
- 		# find more sexy
- 		if confirm('delete item ?')
- 			DashboardManager.removeItem(item)
- 			$scope.$parent.selectedItem = null
+    $scope.deleteItemAction = (item) ->
+        # find more sexy
+        if confirm('delete item ?')
+            DashboardManager.removeItem(item)
+            $scope.$parent.selectedItem = null
 
 
 

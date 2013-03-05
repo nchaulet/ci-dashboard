@@ -1,0 +1,18 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <h3>Settings</h3>
+</div>
+<div class="modal-body" ng-controller="DashSettingsCtl">
+	<form>
+		<fieldset>
+			<legend>Dashboard settings</legend>
+			<label >Refresh interval(ms): </label>
+			<input type="number" ng-model="dashboard.refreshInterval" />
+		</fieldset>
+		<div class="row-fluid">
+
+		</div>
+	</form>
+	<button ng-click="dismiss()" class="btn">Ok</button>
+
+</div>
