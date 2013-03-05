@@ -1,0 +1,16 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+  <h3>Travis</h3>
+</div>
+<div class="modal-body" ng-controller="TravisCtl">
+  <form>
+   <fieldset class="span3">
+          <legend>Add travis ci job </legend>
+          <label>Slug : </label>
+          <input type="text" ng-model="travisRepoName" />
+          <br/>
+          <button class="btn btn-info" ng-click="addTravisJobAction(travisRepoName)"><i class="icon-ok" ></i> Add</button>
+        </fieldset>
+  </form>
+
+</div>

@@ -1,17 +1,30 @@
 
 <div class="navbar navbar-inverse">
 	<div class="navbar-inner">
-		<div class="pull-right">
-			<button ng-hide="edition" class="btn " ng-click="edition = true"><i class="icon-cog"></i> Edit </button>
-		</div>
+		<ul class="nav pull-right">
+			<li ng-show="edition" class="dropdown">
+				  <a class="dropdown-toggle" data-toggle="dropdown" href=""> Actions</a>
+				  <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+				   		<li><a href="" bs-modal="'views/modal/addJenkins.html'">Add jenkins job</a></li>
+						<li><a href="" bs-modal="'views/modal/addTravis.html'">Add Travis CI job</a></li>
+						<li class="divider"></li>
+						<li><a href="">Global parameter</a></li>
+				  </ul>
+			</li>
+			<li>
+				<a href="" ng-hide="edition"  ng-click="edition = true"><i class="icon-cog"></i> Edit </a>
+				<a href="" ng-show="edition" ng-click="edition = false"><i class="icon-remove"></i> Close Edition</a>
+			</li>
+		</ul>
 		<div class="navbar-text">
 			<h5><a href="#/"><i class="icon-circle-arrow-left"></i></a> DASHBOARD {{dashboard.name}}</h5>
 		</div>
 	</div>
 </div>
+
 <div class="container-fluid">
 	<div ng-controller="DashParamsCtl" ng-show="edition" class="well">
-		<button ng-show="edition" class="btn pull-right" ng-click="$parent.edition = false"><i class="icon-remove"></i> Close </button>
+
 		<button class="btn btn-success" ng-click="saveDashboardAction()"><i class="icon-save"></i> Save</button>
 
 		<form>
@@ -22,29 +35,8 @@
 			</fieldset>
 			<div class="row-fluid">
 
-				<fieldset class="span3">
-					<legend>Add jenkins job </legend>
-					<label >Server url : </label>
-					<input type="url" ng-model="jenkinsServer" />&nbsp;
-					<button class="btn" ng-click="searchJenkinsJobsAction()">Search</button>
-					<label >Available jobs : </label>
-					<select ui-select2 ng-model="selectedJob">
-						<option  value="{{job}}" ng-repeat="job in jenkinsJobs" >{{job.name}}</option>
-					</select>
-					<br/><br/>
-					<button class="btn btn-info" ng-click="addJenkinsJobAction(selectedJob)"><i class="icon-ok" ></i> Add</button>
-				</fieldset>
-				<fieldset class="span3">
-					<legend>Add travis ci job </legend>
-					<label>Repo name : </label>
-					<input type="text" ng-model="travisRepoName" />
-					<br/>
-					<button class="btn btn-info" ng-click="addTravisJobAction(travisRepoName)"><i class="icon-ok" ></i> Add</button>
-				</fieldset>
 			</div>
 		</form>
-
-
 	</div>
 
 	<div ng-show="edition &amp;&amp; selectedItem != null" ng-controller="ItemEditCtl" class="well">
@@ -53,7 +45,6 @@
 		<br/>
 		<button class="btn btn-danger" ng-click="deleteItemAction(selectedItem)"><i class="icon-remove-sign"></i>Delete</button>
 	</div>
-
 
 	<div class="container-fluid" ui-sortable ng-model="dashboard.items">
 	<div class="span3 jobs alert" ng-class="{'alert-error': item.status == 'fail', 'alert-success': item.status =='success','alert-info' : item.status == 'running'}"  ng-class="{}" ng-repeat="item in dashboard.items" >

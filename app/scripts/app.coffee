@@ -1,4 +1,4 @@
-angular.module('dashboardApp', ['LocalStorageModule','DashboardModule', 'JenkinsModule', 'TravisCiModule', 'ui'])
+angular.module('dashboardApp', ['$strap', 'LocalStorageModule','DashboardModule', 'JenkinsModule', 'TravisCiModule', 'ui'])
 .config ($routeProvider) ->
    	$routeProvider
     .when '/',

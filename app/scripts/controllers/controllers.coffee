@@ -35,22 +35,33 @@ angular.module('dashboardApp')
  	$scope.dashboard = DashboardManager.currentDashboard
 
 
- 	$scope.searchJenkinsJobsAction = () ->
- 		Jenkins.getJobs $scope.jenkinsServer, (jobs) ->
- 			$scope.jenkinsJobs = jobs;
-
- 	$scope.addJenkinsJobAction =  (job) ->
- 		console.log job
- 		job = JSON.parse(job)
- 		DashboardManager.addJenkinsJob(job.name, job.url)
-
- 	$scope.addTravisJobAction = (name) ->
- 		DashboardManager.addTravisJob(name)
-
  	$scope.saveDashboardAction = () ->
  		DashboardManager.saveCurrentDashboard()
 
+# Dashboard jenkins controller
+angular.module('dashboardApp')
+ .controller 'JenkinsCtl',  ($scope, $routeParams, Jenkins, DashboardManager) ->
+    console.log 'test'
+    $scope.dashboard = DashboardManager.currentDashboard
 
+    $scope.searchJenkinsJobsAction = () ->
+        Jenkins.getJobs $scope.jenkinsServer, (jobs) ->
+            $scope.jenkinsJobs = jobs;
+
+    $scope.addJenkinsJobAction =  (job) ->
+
+            job = JSON.parse(job)
+            DashboardManager.addJenkinsJob(job.name, job.url)
+            $scope.dismiss()
+
+# Travis  controller
+angular.module('dashboardApp')
+ .controller 'TravisCtl',  ($scope, $routeParams, Jenkins, DashboardManager) ->
+    console.log 'test'
+    $scope.dashboard = DashboardManager.currentDashboard
+
+    $scope.addTravisJobAction = (name) ->
+        DashboardManager.addTravisJob(name)
 
 
 angular.module('dashboardApp')

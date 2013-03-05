@@ -10,7 +10,8 @@
     "angular-ui": "*",
     "angular-local-storage": "*",
     "bootstrap.css" : "*",  
-    "font-awesome"  : "*"
+    "font-awesome"  : "*",
+    "angular-strap" : "*"
 },
   "devDependencies": {}
 }
