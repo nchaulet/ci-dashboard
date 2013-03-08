@@ -5,17 +5,9 @@ basePath = '';
 
 // list of files / patterns to load in the browser
 files = [
-  JASMINE,
-  JASMINE_ADAPTER,
-  'app/components/angular/angular.js',
-  'app/components/angular-strap/dist/angular-strap.min.js',
-  'app/components/angular-strap/dist/angular-local-storage.js',
-  'test/vendor/angular-mocks.js',
-  'app/scripts/*.js',
-  'app/scripts/**/*.js',
-  'test/mock/**/*.js',
-  'test/spec/**/*.js',
-  '.tmp/scripts/*.js'
+  ANGULAR_SCENARIO,
+  ANGULAR_SCENARIO_ADAPTER,
+  './test/e2e/**/*.js',
 ];
 
 // list of files to exclude
@@ -40,6 +32,10 @@ logLevel = LOG_INFO;
 
 // enable / disable watching file and executing tests whenever any file changes
 autoWatch = false;
+
+proxies = {
+  '/app/': 'http://localhost:9000/'
+};
 
 // Start these browsers, currently available:
 // - Chrome

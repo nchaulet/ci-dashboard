@@ -25,10 +25,6 @@ module.exports = function (grunt) {
         files: ['test/spec/*.coffee'],
         tasks: ['coffee:test']
       },
-      compass: {
-        files: ['<%= yeoman.app %>/styles/*.{scss,sass}'],
-        tasks: ['compass']
-      },
       livereload: {
         files: [
           '<%= yeoman.app %>/*.html',
@@ -58,7 +54,8 @@ module.exports = function (grunt) {
           middleware: function (connect) {
             return [
               mountFolder(connect, '.tmp'),
-              mountFolder(connect, 'test')
+              mountFolder(connect, 'test'),
+              mountFolder(connect, 'app')
             ];
           }
         }
@@ -87,6 +84,10 @@ module.exports = function (grunt) {
       unit: {
         configFile: 'testacular.conf.js',
         singleRun: true
+      },
+      e2e: {
+        configFile: 'testacular.e2e.conf.js',
+        singleRun: true
       }
     },
     coffee: {
@@ -102,23 +103,6 @@ module.exports = function (grunt) {
           src: '*.coffee',
           dest: 'test/spec'
         }]
-      }
-    },
-    compass: {
-      options: {
-        sassDir: '<%= yeoman.app %>/styles',
-        cssDir: '.tmp/styles',
-        imagesDir: '<%= yeoman.app %>/images',
-        javascriptsDir: '<%= yeoman.app %>/scripts',
-        fontsDir: '<%= yeoman.app %>/styles/fonts',
-        importPath: 'app/components',
-        relativeAssets: true
-      },
-      dist: {},
-      server: {
-        options: {
-          debugInfo: true
-        }
       }
     },
     // not used since Uglify task does concat,
@@ -217,7 +201,6 @@ module.exports = function (grunt) {
   grunt.registerTask('server', [
     'clean:server',
     'coffee:dist',
-    'compass:server',
     'livereload-start',
     'connect:livereload',
     'open',
@@ -227,9 +210,8 @@ module.exports = function (grunt) {
   grunt.registerTask('test', [
     'clean:server',
     'coffee',
-    'compass',
     'connect:test',
-    'testacular'
+    'testacular:e2e'
   ]);
 
   grunt.registerTask('build', [
@@ -237,7 +219,6 @@ module.exports = function (grunt) {
     'jshint',
     'test',
     'coffee',
-    'compass:dist',
     'useminPrepare',
     'imagemin',
     'cssmin',

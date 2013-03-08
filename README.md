@@ -1,6 +1,6 @@
 # CI dashboard
 
-@TODO add Travis ci jobs
+@Test 
 
 # Installation
 

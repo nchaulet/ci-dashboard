@@ -1,7 +1,9 @@
 {
   "name": "jenkins-monitor",
   "version": "0.0.0",
-  "dependencies": {},
+  "dependencies": {
+    "bower" :"*"
+    },
   "devDependencies": {
     "grunt": "0.4.0rc7",
     "grunt-contrib-copy": "0.4.0rc7",
@@ -25,5 +27,8 @@
   },
   "engines": {
     "node": ">=0.8.0"
+  },
+  "scripts" :{
+    "test": "grunt test"
   }
 }
