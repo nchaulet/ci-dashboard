@@ -87,7 +87,7 @@ module.exports = function (grunt) {
       },
       e2e: {
         configFile: 'testacular.e2e.conf.js',
-        singleRun: true
+        singleRun: false
       }
     },
     coffee: {

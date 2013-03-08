@@ -1,6 +1,6 @@
 # CI dashboard
 
-@Test 
+[![Build Status](https://travis-ci.org/nchaulet/ci-dashboard.png?branch=master)](https://travis-ci.org/nchaulet/ci-dashboard)
 
 # Installation
 
