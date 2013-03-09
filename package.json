@@ -1,5 +1,5 @@
 {
-  "name": "jenkins-monitor",
+  "name": "ci-dashboard",
   "version": "0.0.0",
   "dependencies": {
     "bower" :"*"
